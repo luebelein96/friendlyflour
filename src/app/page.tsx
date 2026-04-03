@@ -1,12 +1,55 @@
+import type { Metadata } from "next";
 import { BakedGoodsTrio } from "@/components/baked-goods-trio";
 import { CustomerFavoritesMenu } from "@/components/customer-favorites-menu";
 import { GfBakingSection } from "@/components/gf-baking-section";
 import { HeroHome } from "@/components/hero-home";
+import { JsonLd } from "@/components/json-ld";
 import { NewsletterSection } from "@/components/newsletter-section";
+import { absoluteUrl } from "@/lib/site-config";
+
+const homeDescription =
+  "Gluten-free cookies, pastries, and baking mixes from friendly flour—small batch, thoughtfully made, ridiculously delicious.";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    url: absoluteUrl("/"),
+    title: "friendly flour | Gluten-free baked goods & mixes",
+    description: homeDescription,
+  },
+};
 
 export default function HomePage() {
+  const site = absoluteUrl("/");
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${site}/#organization`,
+        name: "friendly flour",
+        url: site,
+        description: homeDescription,
+        logo: {
+          "@type": "ImageObject",
+          url: absoluteUrl("/text-logo.png"),
+        },
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${site}/#website`,
+        url: site,
+        name: "friendly flour",
+        description: homeDescription,
+        inLanguage: "en-US",
+        publisher: { "@id": `${site}/#organization` },
+      },
+    ],
+  };
+
   return (
     <>
+      <JsonLd data={structuredData} />
       <HeroHome />
       <GfBakingSection />
       <CustomerFavoritesMenu />

@@ -116,7 +116,7 @@ export function ShopClient() {
           </div>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 gap-3 pb-24 sm:gap-5 sm:pb-12 md:grid-cols-3 lg:gap-6">
+        <div className="mt-12 flex flex-col gap-3 pb-24 md:grid md:grid-cols-2 md:gap-5 md:pb-12 lg:grid-cols-3 lg:gap-6">
           {filtered.map((product) => (
             <ProductCard
               key={product.id}

@@ -1,9 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { absoluteUrl } from "@/lib/site-config";
+
+const aboutDescription =
+  "The friendly flour story—gluten-free baking with heart, humor, and great texture.";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "The friendly flour story—gluten-free baking with heart, humor, and great texture.",
+  description: aboutDescription,
+  alternates: { canonical: "/about" },
+  openGraph: {
+    url: absoluteUrl("/about"),
+    title: "About | friendly flour",
+    description: aboutDescription,
+  },
 };
 
 export default function AboutPage() {

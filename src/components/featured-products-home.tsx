@@ -41,7 +41,7 @@ export function FeaturedProductsHome() {
             </span>
           </Link>
         </div>
-        <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4 lg:gap-6">
+        <div className="mt-12 flex flex-col gap-3 md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-4 lg:gap-6">
           {featured.map((product) => (
             <ProductCard
               key={product.id}
