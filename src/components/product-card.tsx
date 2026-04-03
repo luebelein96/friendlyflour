@@ -60,7 +60,7 @@ export function ProductCard({ product, onQuickView }: Props) {
             e.stopPropagation();
             addProduct(product.id, 1);
           }}
-          className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded md:rounded-full bg-[var(--color-brand-red)] text-white transition hover:bg-[var(--color-brand-red-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)] active:scale-[0.98] md:h-auto md:min-h-[3.25rem] md:w-full md:justify-center md:rounded-full md:px-5 md:py-4"
+          className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full md:rounded-full bg-[var(--color-brand-red)] text-white transition hover:bg-[var(--color-brand-red-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)] active:scale-[0.98] md:h-auto md:min-h-[3.25rem] md:w-full md:justify-center md:rounded-full md:px-5 md:py-4"
           aria-label={`Add ${product.name} to cart`}
         >
           <span className="font-mono text-lg leading-none md:hidden" aria-hidden>
