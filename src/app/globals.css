@@ -1,26 +1,127 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --site-header-height: 5.625rem;
+
+  /* Bakery reference palette */
+  --color-cream: #fffaec;
+  --color-surface: #fffaec;
+  --color-tan: #f5f3e8;
+  --color-brand-red: #dd2a1b;
+  --color-brand-red-hover: #c42518;
+  --color-sky: #3a86ff;
+  --color-sky-hover: #2a76ef;
+  --color-sage: #8f9f86;
+  --color-sage-dark: #3f4d3a;
+  --color-gold: #a8987a;
+  --color-accent: #3a86ff;
+  --color-accent-soft: rgba(58, 134, 255, 0.2);
+  --color-ink: #503530;
+  --color-ink-muted: #7a6a65;
+  --color-border: rgba(80, 53, 48, 0.12);
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-card: 0 1px 0 rgba(80, 53, 48, 0.06), 0 20px 50px -24px rgba(80, 53, 48, 0.14);
+  --shadow-card-hover: 0 1px 0 rgba(80, 53, 48, 0.08), 0 28px 60px -20px rgba(80, 53, 48, 0.18);
+  --shadow-cta: 0 8px 24px rgba(58, 134, 255, 0.35);
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* DM Sans everywhere; wordmark is /text-logo.png (no text font) */
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-dm-sans);
+  --font-display: var(--font-dm-sans);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.font-display {
+  font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-dm-sans {
+  font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease both;
+}
+
+.animate-fade-up-delay {
+  animation: fade-up 0.9s ease 0.15s both;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Even rhythm: consistent tracking + word gaps; flex gap separates each repeat */
+.hero-announce-phrase {
+  letter-spacing: 0em;
+  word-spacing: 0.35em;
+}
+
+.hero-announce-marquee {
+  display: inline-flex;
+  flex-flow: row nowrap;
+  width: max-content;
+  animation: marquee 52s linear infinite;
+}
+
+.hero-announce-strip {
+  display: flex;
+  width: max-content;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+  align-items: center;
+  column-gap: 4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-up-delay {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-announce-marquee {
+    animation: none;
+    transform: none;
+  }
 }
