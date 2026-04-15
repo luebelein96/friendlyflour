@@ -4,10 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { useCart } from "@/context/cart-context";
-import { getProductById } from "@/lib/data/products";
+import { useProductCatalog } from "@/context/product-catalog-context";
 import { formatUsd } from "@/lib/format";
 
 export function CheckoutForm() {
+  const { getProductById } = useProductCatalog();
   const { lines, clearCart } = useCart();
   const [promo, setPromo] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
@@ -38,12 +39,12 @@ export function CheckoutForm() {
           Order received (demo)
         </p>
         <p className="mt-3 text-[var(--color-ink-muted)]">
-          Thanks for playing along. When Stripe is wired up, this becomes a real
+          Thanks for playing along. When Square is wired up, this becomes a real
           confirmation page.
         </p>
         <Link
           href="/shop"
-          className="mt-8 inline-flex rounded-[var(--radius-sm)] bg-[var(--color-accent)] px-8 py-3 text-sm font-semibold text-white transition hover:brightness-95"
+          className="mt-8 inline-flex rounded-[var(--radius-sm)] bg-[var(--color-brand-red)] px-8 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-brand-red-hover)]"
         >
           Back to shop
         </Link>
@@ -77,11 +78,11 @@ export function CheckoutForm() {
         Checkout
       </h1>
       <p className="mt-2 text-sm text-[var(--color-ink-muted)]">
-        Front-end preview — connect{" "}
+        Front-end preview — call{" "}
         <code className="rounded-[var(--radius-sm)] bg-[var(--color-surface)] px-1.5 py-0.5 text-xs ring-1 ring-[var(--color-border)]">
-          createStripeCheckoutSession
+          createSquareOrder
         </code>{" "}
-        when you&apos;re ready.
+        from a server action after tokenizing the card with Square&apos;s Web Payments SDK.
       </p>
 
       <form
@@ -108,7 +109,7 @@ export function CheckoutForm() {
                   type="email"
                   required
                   autoComplete="email"
-                  className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-accent)] focus:ring-2"
+                  className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-brand-red)] focus:ring-2"
                 />
               </div>
               <div className="sm:col-span-2">
@@ -120,7 +121,7 @@ export function CheckoutForm() {
                   name="phone"
                   type="tel"
                   autoComplete="tel"
-                  className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-accent)] focus:ring-2"
+                  className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-brand-red)] focus:ring-2"
                 />
               </div>
             </div>
@@ -140,7 +141,7 @@ export function CheckoutForm() {
                   name="fullName"
                   required
                   autoComplete="name"
-                  className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-accent)] focus:ring-2"
+                  className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-brand-red)] focus:ring-2"
                 />
               </div>
               <div>
@@ -152,7 +153,7 @@ export function CheckoutForm() {
                   name="line1"
                   required
                   autoComplete="address-line1"
-                  className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-accent)] focus:ring-2"
+                  className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-brand-red)] focus:ring-2"
                 />
               </div>
               <div>
@@ -163,7 +164,7 @@ export function CheckoutForm() {
                   id="line2"
                   name="line2"
                   autoComplete="address-line2"
-                  className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-accent)] focus:ring-2"
+                  className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-brand-red)] focus:ring-2"
                 />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -176,7 +177,7 @@ export function CheckoutForm() {
                     name="city"
                     required
                     autoComplete="address-level2"
-                    className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-accent)] focus:ring-2"
+                    className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-brand-red)] focus:ring-2"
                   />
                 </div>
                 <div>
@@ -188,7 +189,7 @@ export function CheckoutForm() {
                     name="state"
                     required
                     autoComplete="address-level1"
-                    className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-accent)] focus:ring-2"
+                    className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-brand-red)] focus:ring-2"
                   />
                 </div>
               </div>
@@ -202,7 +203,7 @@ export function CheckoutForm() {
                     name="postal"
                     required
                     autoComplete="postal-code"
-                    className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-accent)] focus:ring-2"
+                    className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-brand-red)] focus:ring-2"
                   />
                 </div>
                 <div>
@@ -215,7 +216,7 @@ export function CheckoutForm() {
                     required
                     autoComplete="country-name"
                     defaultValue="United States"
-                    className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-accent)] focus:ring-2"
+                    className="mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2.5 text-sm outline-none ring-[var(--color-brand-red)] focus:ring-2"
                   />
                 </div>
               </div>
@@ -227,8 +228,16 @@ export function CheckoutForm() {
               Payment <span className="text-sm font-normal text-[var(--color-ink-muted)]">(mock)</span>
             </legend>
             <p className="mt-2 text-xs text-[var(--color-ink-muted)]">
-              Card data will be collected by Stripe Elements or Checkout—this UI is
-              for layout only.
+              Production: replace this block with Square&apos;s{" "}
+              <a
+                href="https://developer.squareup.com/docs/web-payments/overview"
+                className="font-medium text-[var(--color-brand-red)] underline decoration-[var(--color-brand-red)]/30 underline-offset-2 hover:decoration-[var(--color-brand-red)]"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Web Payments SDK
+              </a>{" "}
+              to tokenize the card, then charge on the server with the Payments API.
             </p>
             <div className="mt-4 grid gap-4">
               <div>
@@ -326,7 +335,7 @@ export function CheckoutForm() {
                   id="promo"
                   value={promo}
                   onChange={(e) => setPromo(e.target.value)}
-                  className="min-w-0 flex-1 rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2 text-sm outline-none ring-[var(--color-accent)] focus:ring-2"
+                  className="min-w-0 flex-1 rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-cream)] px-3 py-2 text-sm outline-none ring-[var(--color-brand-red)] focus:ring-2"
                   placeholder="TRYKINDSTATE"
                 />
                 <button
@@ -365,7 +374,7 @@ export function CheckoutForm() {
             </dl>
             <button
               type="submit"
-              className="mt-6 w-full rounded-[var(--radius-sm)] bg-[var(--color-accent)] py-3.5 text-sm font-semibold text-white transition hover:brightness-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ink)]"
+              className="mt-6 w-full rounded-[var(--radius-sm)] bg-[var(--color-brand-red)] py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--color-brand-red-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)]"
             >
               Place order
             </button>

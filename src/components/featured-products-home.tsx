@@ -1,18 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { featuredProductIds, products } from "@/lib/data/products";
+import { useMemo, useState } from "react";
 import type { Product } from "@/types/product";
 import { ProductCard } from "@/components/product-card";
 import { ProductQuickView } from "@/components/product-quick-view";
-
-const featured = featuredProductIds
-  .map((id) => products.find((p) => p.id === id))
-  .filter((p): p is Product => Boolean(p));
+import { useProductCatalog } from "@/context/product-catalog-context";
 
 export function FeaturedProductsHome() {
+  const { products, featuredProductIds } = useProductCatalog();
   const [quick, setQuick] = useState<Product | null>(null);
+
+  const featured = useMemo(() => {
+    return featuredProductIds
+      .map((id) => products.find((p) => p.id === id))
+      .filter((p): p is Product => Boolean(p));
+  }, [products, featuredProductIds]);
 
   return (
     <>

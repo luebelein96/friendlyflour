@@ -6,10 +6,11 @@ export function NewsletterSection() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
-      <div className="relative overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-14 shadow-[var(--shadow-card)] sm:px-12 sm:py-16">
+    <section className="mx-auto max-w-7xl px-4 pb-10 pt-14 sm:px-6 sm:pb-12 sm:pt-16 lg:px-8 lg:pb-14 lg:pt-20">
+      <div className="relative isolate overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-14 shadow-[var(--shadow-card)] sm:px-12 sm:py-16">
+        {/* Radial wash only — avoid filter: blur() so hover transforms elsewhere don’t recomposite this layer oddly */}
         <div
-          className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[rgba(221,42,27,0.14)] blur-3xl"
+          className="pointer-events-none absolute -right-20 -top-20 h-[22rem] w-[22rem] bg-[radial-gradient(circle_at_center,rgba(221,42,27,0.2)_0%,rgba(221,42,27,0.06)_42%,transparent_68%)]"
           aria-hidden
         />
         <div className="relative mx-auto max-w-xl text-center">

@@ -1,4 +1,3 @@
-/** Homepage “Customer Favorites” menu (from design reference). */
 export type MenuFavoriteItem = { name: string; price: string };
 
 export type MenuFavoriteColumn = {
@@ -6,35 +5,24 @@ export type MenuFavoriteColumn = {
   items: MenuFavoriteItem[];
 };
 
-export const menuFavorites: MenuFavoriteColumn[] = [
+/** Homepage “Customer favorites” menu — hardcoded (not from Square). */
+export const MENU_FAVORITES_COLUMNS: MenuFavoriteColumn[] = [
   {
     title: "Breads",
     items: [
-      { name: "Classic Sourdough", price: "$6.00" },
-      { name: "Honey Whole Wheat", price: "$5.50" },
-      { name: "Rosemary Focaccia", price: "$5.00" },
-      { name: "Seeded Rye", price: "$5.75" },
-      { name: "Brioche Loaf", price: "$7.00" },
+      { name: "Ciabatta rolls", price: "$10" },
+      { name: "Sandwich Loaf", price: "$8" },
+      { name: "Burger Buns", price: "$8" },
+      { name: "Pizza Dough", price: "$10" },
     ],
   },
   {
-    title: "Pastries & Bites",
+    title: "Pastries + Treats",
     items: [
-      { name: "Butter Croissant", price: "$4.00" },
-      { name: "Almond Danish", price: "$4.50" },
-      { name: "Blueberry Muffin", price: "$3.75" },
-      { name: "Cinna Roll", price: "$4.00" },
-      { name: "Brownie Bar", price: "$3.50" },
+      { name: "Chocolate Chip Cookies", price: "$3" },
+      { name: "Mini Cake", price: "$12" },
+      { name: "Blueberry Cheesecake Bun", price: "$10" },
+      { name: "Strawberry Cheesecake Bar", price: "$4" },
     ],
   },
-  // {
-  //   title: "Cakes & Sweets",
-  //   items: [
-  //     { name: "Lemon Tart", price: "$5.25" },
-  //     { name: "Choco Layer Cake", price: "$6.00" },
-  //     { name: "Cheesecake Slice", price: "$5.50" },
-  //     { name: "Mocha Mousse", price: "$4.75" },
-  //     { name: "Seasonal Galette", price: "$5.00" },
-  //   ],
-  // },
 ];

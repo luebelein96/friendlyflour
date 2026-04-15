@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useCart } from "@/context/cart-context";
-import { getProductById } from "@/lib/data/products";
+import { useProductCatalog } from "@/context/product-catalog-context";
 import { formatUsd } from "@/lib/format";
+import { canAddMore } from "@/lib/product-stock";
 
 export function CartDrawer() {
+  const { getProductById } = useProductCatalog();
   const {
     lines,
     isOpen,
@@ -128,7 +130,8 @@ export function CartDrawer() {
                           </span>
                           <button
                             type="button"
-                            className="px-2.5 py-1 text-lg leading-none text-[var(--color-ink)] transition hover:bg-black/[0.04]"
+                            disabled={!canAddMore(product, line.quantity)}
+                            className="px-2.5 py-1 text-lg leading-none text-[var(--color-ink)] transition hover:bg-black/[0.04] disabled:cursor-not-allowed disabled:opacity-40"
                             onClick={() =>
                               setQuantity(line.productId, line.quantity + 1)
                             }

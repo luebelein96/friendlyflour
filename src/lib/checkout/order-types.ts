@@ -1,7 +1,10 @@
 /**
- * Shapes for a future Stripe Checkout / PaymentIntent flow.
- * Keep UI forms aligned with these fields when integrating.
+ * Checkout payload shapes for Square Payments + Web Payments SDK.
+ * Collect shipping/contact in the app, tokenize the card on the client, charge on the server.
+ *
+ * @see https://developer.squareup.com/docs/web-payments/overview
  */
+
 export type CheckoutContact = {
   email: string;
   phone?: string;
@@ -30,11 +33,3 @@ export type CheckoutDraft = {
   lineItems: CheckoutLineItem[];
   promoCode?: string;
 };
-
-/** Placeholder: server action or API route will create a Stripe Checkout Session. */
-export async function createStripeCheckoutSession(
-  draft: CheckoutDraft
-): Promise<{ url: string } | { error: string }> {
-  void draft;
-  return { error: "Stripe not configured — UI mock only." };
-}

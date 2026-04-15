@@ -125,3 +125,20 @@ body {
     transform: none;
   }
 }
+
+/*
+ * Footer nav links — keep UNLAYERED so this wins over @layer utilities.
+ * Touch devices often never get :hover; :active / :focus-visible still show the brand color.
+ */
+a.footer-nav-link {
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a.footer-nav-link:hover,
+a.footer-nav-link:active,
+a.footer-nav-link:focus-visible {
+  color: var(--color-brand-red);
+}
+

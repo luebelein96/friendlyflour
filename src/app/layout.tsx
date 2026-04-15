@@ -1,16 +1,27 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Lilita_One } from "next/font/google";
 import { CartProvider } from "@/context/cart-context";
+import { ProductCatalogProvider } from "@/context/product-catalog-context";
 import { CartDrawer } from "@/components/cart-drawer";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { loadProductCatalog } from "@/lib/data/get-catalog";
 import { getSiteUrl } from "@/lib/site-config";
 import "./globals.css";
+
+/** Fresh Square catalog each request — avoids baking a stale/fallback catalog at build time. */
+export const dynamic = "force-dynamic";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
   weight: ["400", "500", "700"],
+});
+
+const lilitaOne = Lilita_One({
+  variable: "--font-lilita-one",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 const siteUrl = getSiteUrl();
@@ -73,20 +84,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const catalog = await loadProductCatalog();
+
   return (
-    <html lang="en" className={`${dmSans.variable} h-full scroll-smooth antialiased`}>
+    <html
+      lang="en"
+      className={`${dmSans.variable} ${lilitaOne.variable} h-full scroll-smooth antialiased`}
+    >
       <body className="flex min-h-full flex-col bg-[var(--color-cream)] font-dm-sans text-[var(--color-ink)] selection:bg-[var(--color-accent-soft)] selection:text-[var(--color-ink)]">
-        <CartProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-          <CartDrawer />
-        </CartProvider>
+        <ProductCatalogProvider value={catalog}>
+          <CartProvider>
+            <SiteHeader />
+            <main className="flex-1 pb-16 md:pb-20 lg:pb-24">{children}</main>
+            <SiteFooter />
+            <CartDrawer />
+          </CartProvider>
+        </ProductCatalogProvider>
       </body>
     </html>
   );

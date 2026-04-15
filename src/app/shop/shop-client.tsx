@@ -1,52 +1,34 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { categories, products } from "@/lib/data/products";
 import type { Product } from "@/types/product";
 import { ProductCard } from "@/components/product-card";
 import { ProductQuickView } from "@/components/product-quick-view";
 import { useCart } from "@/context/cart-context";
+import { useProductCatalog } from "@/context/product-catalog-context";
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "name";
 
-/** Curated order for “Featured”; anything else sorts after by array order in products.ts */
-const FEATURED_ORDER = [
-  "p-cc-cookies",
-  "p-blueberry-cheesecake-bun",
-  "p-blueberry-cheesecake-bar",
-  "p-pizza-dough-mix",
-  "p-vanilla-cake-mix",
-  "p-strawberry-muffin-mix",
-  "p-plain-bagel",
-  "p-sesame-bagel",
-  "p-cheddar-bagel",
-  "p-jalapeno-cheddar-bagel",
-  "p-pizza",
-  "p-cinnamon-rolls",
-  "p-cookie-dough-rolls",
-  "p-brownie-cookies",
-  "p-hamburger-buns",
-  "p-ciabatta-rolls",
-  "p-white-bread",
-  "p-biscuits",
-] as const;
-
-function featuredRank(id: string): number {
-  const i = FEATURED_ORDER.indexOf(id as (typeof FEATURED_ORDER)[number]);
-  return i === -1 ? 10_000 : i;
-}
-
 export function ShopClient() {
+  const { products, featuredProductIds } = useProductCatalog();
   const { itemCount, openCart } = useCart();
-  const [category, setCategory] = useState<string>("all");
   const [sort, setSort] = useState<SortKey>("featured");
   const [quick, setQuick] = useState<Product | null>(null);
 
+  const featuredRank = useMemo(() => {
+    const order: string[] = [];
+    for (const id of featuredProductIds) {
+      if (!order.includes(id)) order.push(id);
+    }
+    for (const p of products) {
+      if (!order.includes(p.id)) order.push(p.id);
+    }
+    const rank = new Map(order.map((id, i) => [id, i]));
+    return (id: string) => rank.get(id) ?? 10_000;
+  }, [featuredProductIds, products]);
+
   const filtered = useMemo(() => {
-    const list =
-      category === "all"
-        ? [...products]
-        : products.filter((p) => p.category === category);
+    const list = [...products];
 
     if (sort === "price-asc") {
       list.sort((a, b) => a.priceCents - b.priceCents);
@@ -58,7 +40,7 @@ export function ShopClient() {
       list.sort((a, b) => featuredRank(a.id) - featuredRank(b.id));
     }
     return list;
-  }, [category, sort]);
+  }, [sort, products, featuredRank]);
 
   return (
     <>
@@ -74,7 +56,8 @@ export function ShopClient() {
           </p>
         </header>
 
-        <div className="mt-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-end">
+          {/* Category filters (categoryLabels) — hidden for now
           <div
             className="flex flex-wrap gap-2"
             role="group"
@@ -98,6 +81,7 @@ export function ShopClient() {
               );
             })}
           </div>
+          */}
           <div className="flex items-center gap-3">
             <label htmlFor="sort" className="text-[13px] font-semibold uppercase tracking-[0.06em] text-[var(--color-ink-muted)]">
               Sort

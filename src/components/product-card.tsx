@@ -4,6 +4,8 @@ import Image from "next/image";
 import type { Product } from "@/types/product";
 import { useCart } from "@/context/cart-context";
 import { formatUsd } from "@/lib/format";
+import { soldOutCtaInlineStyle } from "@/lib/cta-sold-out-style";
+import { canAddMore, maxPurchasableQuantity } from "@/lib/product-stock";
 
 type Props = {
   product: Product;
@@ -11,16 +13,22 @@ type Props = {
 };
 
 export function ProductCard({ product, onQuickView }: Props) {
-  const { addProduct } = useCart();
+  const { addProduct, lines } = useCart();
+  const inCart =
+    lines.find((l) => l.productId === product.id)?.quantity ?? 0;
+  const maxQty = maxPurchasableQuantity(product);
+  const soldOut = maxQty <= 0;
+  const atStockLimit = !soldOut && !canAddMore(product, inCart);
+  const unavailable = soldOut || atStockLimit;
 
   const openQuickView = () => onQuickView(product);
 
   return (
-    <article className="group flex flex-row items-stretch gap-3 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-[0_1px_0_rgba(12,12,12,0.04)] transition duration-300 md:flex-col md:gap-0 md:p-0 md:hover:-translate-y-0.5 md:hover:shadow-[var(--shadow-card-hover)]">
+    <article className="group flex flex-row items-center gap-3 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-[0_1px_0_rgba(12,12,12,0.04)] transition duration-300 md:flex-col md:items-stretch md:gap-0 md:p-0 md:hover:-translate-y-0.5 md:hover:shadow-[var(--shadow-card-hover)]">
       <button
         type="button"
         onClick={openQuickView}
-        className="flex min-w-0 flex-1 cursor-pointer gap-3 rounded-xl text-left outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] md:w-full md:flex-col md:gap-0 md:rounded-none md:ring-offset-0"
+        className="flex min-w-0 flex-1 flex-row gap-3 rounded-xl text-left outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] md:w-full md:flex-col md:gap-0 md:rounded-none md:ring-offset-0"
       >
         <div className="relative h-[5.25rem] w-[5.25rem] shrink-0 overflow-hidden rounded-xl bg-[var(--color-tan)] md:aspect-square md:h-auto md:w-full md:rounded-none">
           <Image
@@ -30,7 +38,11 @@ export function ProductCard({ product, onQuickView }: Props) {
             className="object-cover transition duration-500 md:group-hover:scale-[1.03]"
             sizes="(max-width: 767px) 84px, (max-width: 1024px) 50vw, 25vw"
           />
-          {product.badge ? (
+          {soldOut ? (
+            <span className="absolute left-1 top-1 rounded-[var(--radius-sm)] bg-[var(--color-ink)]/85 px-1 py-0.5 text-[7px] font-bold uppercase tracking-wide text-white ring-1 ring-black/10 backdrop-blur-sm md:left-2 md:top-2 md:px-2 md:py-1 md:text-[10px] md:tracking-wider">
+              Sold out
+            </span>
+          ) : product.badge ? (
             <span className="absolute left-1 top-1 rounded-[var(--radius-sm)] bg-[var(--color-surface)]/95 px-1 py-0.5 text-[7px] font-bold uppercase tracking-wide text-[var(--color-ink)] ring-1 ring-black/[0.06] backdrop-blur-sm md:left-2 md:top-2 md:px-2 md:py-1 md:text-[10px] md:tracking-wider">
               {product.badge === "bestseller" ? "Best seller" : "New"}
             </span>
@@ -53,22 +65,51 @@ export function ProductCard({ product, onQuickView }: Props) {
         </div>
       </button>
 
-      <div className="flex w-[2.25rem] shrink-0 flex-col justify-end gap-2 md:w-full md:grid md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-3 md:px-5 md:pb-5">
+      <div className="flex shrink-0 flex-col gap-2 self-stretch max-md:ml-auto max-md:w-auto max-md:items-end max-md:justify-center md:ml-0 md:min-w-0 md:w-full md:flex-row md:flex-nowrap md:items-stretch md:justify-start md:gap-3 md:px-5 md:pb-5">
         <button
           type="button"
+          disabled={unavailable}
+          style={unavailable ? soldOutCtaInlineStyle : undefined}
           onClick={(e) => {
             e.stopPropagation();
+            if (unavailable) return;
             addProduct(product.id, 1);
           }}
-          className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full md:rounded-full bg-[var(--color-brand-red)] text-white transition hover:bg-[var(--color-brand-red-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)] active:scale-[0.98] md:h-auto md:min-h-[3.25rem] md:w-full md:justify-center md:rounded-full md:px-5 md:py-4"
-          aria-label={`Add ${product.name} to cart`}
+          className={
+            unavailable
+              ? "box-border flex h-auto min-h-9 w-auto max-w-[9rem] shrink-0 cursor-not-allowed items-center justify-center rounded-full px-2.5 py-1.5 text-center text-[9px] font-semibold leading-tight md:h-auto md:min-h-[3.25rem] md:max-w-none md:min-w-0 md:flex-1 md:px-5 md:py-4 md:text-sm"
+              : "box-border flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border-2 border-transparent bg-[var(--color-brand-red)] p-0 text-white transition hover:bg-[var(--color-brand-red-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)] active:scale-[0.98] md:h-auto md:min-h-[3.25rem] md:w-auto md:min-w-0 md:flex-1 md:px-5 md:py-4"
+          }
+          aria-label={
+            soldOut
+              ? `${product.name} is sold out`
+              : atStockLimit
+                ? `Maximum stock reached for ${product.name}`
+                : `Add ${product.name} to cart`
+          }
         >
-          <span className="font-mono text-lg leading-none md:hidden" aria-hidden>
-            +
-          </span>
-          <span className="hidden font-mono text-base font-medium tracking-wide md:inline">
-            Add to cart
-          </span>
+          {soldOut ? (
+            <span className="whitespace-nowrap text-[9px] md:text-sm">
+              Sold out
+            </span>
+          ) : atStockLimit ? (
+            <>
+              <span className="whitespace-nowrap md:hidden">Max</span>
+              <span className="max-md:hidden whitespace-nowrap">Max in cart</span>
+            </>
+          ) : (
+            <>
+              <span
+                className="font-mono text-lg leading-none md:hidden"
+                aria-hidden
+              >
+                +
+              </span>
+              <span className="max-md:hidden whitespace-nowrap font-medium">
+                Add to cart
+              </span>
+            </>
+          )}
         </button>
         <button
           type="button"
@@ -76,9 +117,9 @@ export function ProductCard({ product, onQuickView }: Props) {
             e.stopPropagation();
             openQuickView();
           }}
-          className="hidden min-h-12 cursor-pointer items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-transparent text-[var(--color-ink)] transition hover:border-[var(--color-ink)]/25 hover:bg-black/[0.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)] md:inline-flex md:min-h-[3.25rem] md:max-w-[8.5rem] md:shrink-0 md:px-3 md:py-4 md:text-xs md:font-semibold md:leading-tight"
+          className="hidden min-h-11 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-transparent px-2.5 py-2 text-center text-[11px] font-semibold leading-tight text-[var(--color-ink)] transition hover:border-[var(--color-ink)]/25 hover:bg-black/[0.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)] sm:px-3 sm:text-xs md:flex md:min-h-[3.25rem] md:w-auto md:max-w-[8.5rem] md:shrink-0 md:px-3 md:py-4"
         >
-          Quick view
+          <span className="whitespace-nowrap">Quick view</span>
         </button>
       </div>
     </article>

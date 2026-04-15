@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { menuFavorites } from "@/lib/data/menu-favorites";
+import { MENU_FAVORITES_COLUMNS } from "@/lib/data/menu-favorites";
 
 export function CustomerFavoritesMenu() {
   return (
@@ -14,7 +16,7 @@ export function CustomerFavoritesMenu() {
       </div>
 
       <div className="mx-auto mt-4 grid max-w-[1000px] gap-6 md:grid-cols-2 md:gap-6 lg:mt-14">
-        {menuFavorites.map((col) => (
+        {MENU_FAVORITES_COLUMNS.map((col) => (
           <div
             key={col.title}
             className="rounded-[12px] bg-white px-7 pb-5 pt-8 ring-1 ring-black/[0.06] shadow-[0_1px_0_rgba(80,53,48,0.04)]"

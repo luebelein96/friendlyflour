@@ -4,7 +4,9 @@ import Image from "next/image";
 import { useEffect } from "react";
 import type { Product } from "@/types/product";
 import { useCart } from "@/context/cart-context";
+import { soldOutCtaInlineStyle } from "@/lib/cta-sold-out-style";
 import { formatUsd } from "@/lib/format";
+import { canAddMore, maxPurchasableQuantity } from "@/lib/product-stock";
 
 type Props = {
   product: Product | null;
@@ -12,7 +14,7 @@ type Props = {
 };
 
 export function ProductQuickView({ product, onClose }: Props) {
-  const { addProduct } = useCart();
+  const { addProduct, lines } = useCart();
 
   useEffect(() => {
     if (!product) return;
@@ -31,6 +33,12 @@ export function ProductQuickView({ product, onClose }: Props) {
   }, [product]);
 
   if (!product) return null;
+
+  const inCart =
+    lines.find((l) => l.productId === product.id)?.quantity ?? 0;
+  const maxQty = maxPurchasableQuantity(product);
+  const soldOut = maxQty <= 0;
+  const atStockLimit = !soldOut && !canAddMore(product, inCart);
 
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center sm:items-center sm:p-6">
@@ -67,7 +75,11 @@ export function ProductQuickView({ product, onClose }: Props) {
           </button>
         </div>
         <div className="flex flex-1 flex-col overflow-y-auto p-6">
-          {product.badge ? (
+          {soldOut ? (
+            <span className="mb-2 inline-flex w-fit rounded-[var(--radius-sm)] bg-[var(--color-ink)]/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white ring-1 ring-black/10">
+              Sold out
+            </span>
+          ) : product.badge ? (
             <span className="mb-2 inline-flex w-fit rounded-[var(--radius-sm)] bg-[var(--color-cream)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-ink)] ring-1 ring-[var(--color-border)]">
               {product.badge === "bestseller" ? "Best seller" : "New"}
             </span>
@@ -84,17 +96,36 @@ export function ProductQuickView({ product, onClose }: Props) {
           <p className="mt-5 text-xl font-bold tabular-nums text-[var(--color-ink)]">
             {formatUsd(product.priceCents)}
           </p>
+          {product.tracksInventory &&
+          typeof product.stockQuantity === "number" &&
+          !soldOut ? (
+            <p className="mt-2 text-xs text-[var(--color-ink-muted)]">
+              {product.stockQuantity} in stock
+              {inCart > 0 ? ` · ${inCart} in your cart` : ""}
+            </p>
+          ) : null}
         </div>
         <div className="sticky bottom-0 border-t border-[var(--color-border)] bg-[var(--color-surface)]/95 p-4 backdrop-blur-md sm:static sm:border-0 sm:bg-transparent sm:p-6 sm:pt-0">
           <button
             type="button"
+            disabled={soldOut || atStockLimit}
+            style={soldOut || atStockLimit ? soldOutCtaInlineStyle : undefined}
             onClick={() => {
+              if (soldOut || atStockLimit) return;
               addProduct(product.id, 1);
               onClose();
             }}
-            className="w-full cursor-pointer rounded-full bg-[var(--color-brand-red)] py-3.5 font-mono text-sm font-medium tracking-wide text-white transition hover:bg-[var(--color-brand-red-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)]"
+            className={`box-border w-full rounded-full py-3.5 font-mono text-sm font-medium tracking-wide ${
+              soldOut || atStockLimit
+                ? "cursor-not-allowed"
+                : "cursor-pointer border-2 border-transparent bg-[var(--color-brand-red)] text-white transition hover:bg-[var(--color-brand-red-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)]"
+            }`}
           >
-            Add to cart — {formatUsd(product.priceCents)}
+            {soldOut
+              ? "Sold out"
+              : atStockLimit
+                ? "Maximum quantity in cart"
+                : `Add to cart — ${formatUsd(product.priceCents)}`}
           </button>
         </div>
       </div>

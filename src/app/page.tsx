@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BakedGoodsTrio } from "@/components/baked-goods-trio";
+import { CustomOrdersSection } from "@/components/custom-orders-section";
 import { CustomerFavoritesMenu } from "@/components/customer-favorites-menu";
 import { GfBakingSection } from "@/components/gf-baking-section";
 import { HeroHome } from "@/components/hero-home";
@@ -53,6 +54,7 @@ export default function HomePage() {
       <HeroHome />
       <GfBakingSection />
       <CustomerFavoritesMenu />
+      <CustomOrdersSection />
 
       {/* Our beginning + studio placeholder
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
