@@ -23,18 +23,17 @@ export function CustomOrdersSection() {
               Custom orders
             </p>
             <h2 className="mt-4 text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-[1.12] tracking-tight">
-              Celebrations, offices &amp; something extra special
+              Celebrations &amp; special occasions.
             </h2>
             <p className="mt-5 text-base leading-relaxed text-white/90 sm:text-lg">
-              Need a larger batch, a party platter, or a one-off bake for an
-              event? Tell us what you have in mind—we&apos;ll work with you on
-              timing, dietary needs, and pickup.
+              For larger orders, events, or something one-of-a-kind. Reach out and
+              we&apos;ll work with you on timing, quantities, and dietary needs.
             </p>
             <Link
               href="mailto:hello@friendlyflour.com?subject=Custom%20order%20inquiry"
-              className="mt-8 inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--color-cream)] px-8 text-sm font-medium tracking-[0.04em] text-[var(--color-brand-red)] transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="mt-8 inline-flex min-h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-medium tracking-[0.04em] text-[var(--color-brand-red)] transition hover:bg-[var(--color-cream)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              Inquire about a custom order
+              Get in touch
             </Link>
           </div>
         </div>

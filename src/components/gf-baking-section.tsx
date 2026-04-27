@@ -14,13 +14,13 @@ export function GfBakingSection() {
               Great baking was never about the gluten anyway
             </h2>
             <p className="mt-5 text-base leading-relaxed text-white/90 sm:text-lg">
-              A simple statement about why our products are so good. They taste
-              amazing and we want everyone to know about them. We are about to
-              hit it big with our amazing GF treats and mixes.
+              Everything here is gluten-free. None of it tastes like it.
+              Friendly Flour is a micro bakery dedicated to the craft of gluten-free baking.
+              We bake everything fresh, in small batches, with real ingredients.
             </p>
             <Link
               href="/shop"
-              className="mt-8 inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--color-cream)] px-8 text-sm font-medium tracking-[0.04em] text-[var(--color-brand-red)] transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="mt-8 inline-flex min-h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-medium tracking-[0.04em] text-[var(--color-brand-red)] transition hover:bg-[var(--color-cream)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Shop Now
             </Link>

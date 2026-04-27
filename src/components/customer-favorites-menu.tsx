@@ -11,7 +11,7 @@ export function CustomerFavoritesMenu() {
           Customer favorites
         </p>
         <h2 className="mt-4 max-w-[min(100%,28rem)] text-[clamp(1.625rem,4.2vw,2.5rem)] font-bold leading-[1.18] tracking-tight text-[var(--color-brand-red)] sm:max-w-2xl">
-          Don&apos;t know where to start? Try our best-selling treats
+          Don&apos;t know where to start? Try our best-sellers.
         </h2>
       </div>
 
