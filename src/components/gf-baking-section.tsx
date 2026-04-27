@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function GfBakingSection() {
   return (
-    <section className="bg-[var(--color-brand-red)] font-dm-sans text-white">
+    <section className="bg-[var(--color-brand-red)] font-dm-sans text-white selection:bg-[var(--color-sky)] selection:text-white">
       <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
         <div className="grid gap-10 sm:grid-cols-2 sm:items-center sm:gap-8 md:gap-10 lg:gap-14 xl:gap-20">
           <div className="max-w-xl sm:min-w-0">

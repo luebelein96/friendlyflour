@@ -96,7 +96,7 @@ export default async function RootLayout({
       lang="en"
       className={`${dmSans.variable} ${lilitaOne.variable} h-full scroll-smooth antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-[var(--color-cream)] font-dm-sans text-[var(--color-ink)] selection:bg-[var(--color-accent-soft)] selection:text-[var(--color-ink)]">
+      <body className="flex min-h-full flex-col bg-[var(--color-cream)] font-dm-sans text-[var(--color-ink)] selection:bg-[var(--color-brand-red)] selection:text-white">
         <ProductCatalogProvider value={catalog}>
           <CartProvider>
             <SiteHeader />
