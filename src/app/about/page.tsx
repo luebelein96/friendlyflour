@@ -27,7 +27,7 @@ export default function AboutPage() {
         Gluten-free baking is hard to do well. We do it anyway.
       </h1>
       <p className="mt-5 text-base leading-relaxed text-[var(--color-ink-muted)] sm:text-lg">
-        My wife and I started Friendly Flour because we believed the bar could be higher.
+        We started Friendly Flour because we believed the bar could be higher.
         We&apos;ve spent years obsessing over what gluten-free baking can actually be, and we&apos;re not done yet.
       </p>
       <div className="relative mt-12 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] shadow-[var(--shadow-card)]">
