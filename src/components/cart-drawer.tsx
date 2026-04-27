@@ -5,7 +5,9 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useCart } from "@/context/cart-context";
 import { useProductCatalog } from "@/context/product-catalog-context";
+import { ProductImagePlaceholder } from "@/components/product-image-placeholder";
 import { formatUsd } from "@/lib/format";
+import { hasProductImage } from "@/lib/product-image";
 import { canAddMore } from "@/lib/product-stock";
 
 export function CartDrawer() {
@@ -98,13 +100,17 @@ export function CartDrawer() {
                     className="flex gap-3 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-cream)]/50 p-3"
                   >
                     <div className="relative h-[4.5rem] w-[4.5rem] shrink-0 overflow-hidden rounded-[var(--radius-sm)] bg-[var(--color-tan)]">
-                      <Image
-                        src={product.imageUrl}
-                        alt={product.imageAlt}
-                        fill
-                        className="object-cover"
-                        sizes="72px"
-                      />
+                      {hasProductImage(product.imageUrl) ? (
+                        <Image
+                          src={product.imageUrl}
+                          alt={product.imageAlt}
+                          fill
+                          className="object-cover"
+                          sizes="72px"
+                        />
+                      ) : (
+                        <ProductImagePlaceholder compact />
+                      )}
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-semibold leading-snug text-[var(--color-ink)]">

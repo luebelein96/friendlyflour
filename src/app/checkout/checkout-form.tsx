@@ -5,7 +5,9 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { useCart } from "@/context/cart-context";
 import { useProductCatalog } from "@/context/product-catalog-context";
+import { ProductImagePlaceholder } from "@/components/product-image-placeholder";
 import { formatUsd } from "@/lib/format";
+import { hasProductImage } from "@/lib/product-image";
 
 export function CheckoutForm() {
   const { getProductById } = useProductCatalog();
@@ -304,13 +306,17 @@ export function CheckoutForm() {
               {lineDetails.map(({ line, product }) => (
                 <li key={line.productId} className="flex gap-3">
                   <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[var(--radius-sm)] bg-[var(--color-tan)]">
-                    <Image
-                      src={product.imageUrl}
-                      alt={product.imageAlt}
-                      fill
-                      className="object-cover"
-                      sizes="56px"
-                    />
+                    {hasProductImage(product.imageUrl) ? (
+                      <Image
+                        src={product.imageUrl}
+                        alt={product.imageAlt}
+                        fill
+                        className="object-cover"
+                        sizes="56px"
+                      />
+                    ) : (
+                      <ProductImagePlaceholder compact />
+                    )}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium leading-snug text-[var(--color-ink)]">

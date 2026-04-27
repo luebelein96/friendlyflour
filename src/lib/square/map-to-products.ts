@@ -1,9 +1,6 @@
 import type { Product } from "@/types/product";
 import type { SquareCatalogMaps } from "./catalog-api";
 
-const PLACEHOLDER_IMAGE =
-  "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80";
-
 function slugify(name: string, id: string): string {
   const base = name
     .toLowerCase()
@@ -35,7 +32,7 @@ export function mapsToProducts(maps: SquareCatalogMaps): {
       description: v.description,
       priceCents: v.priceCents,
       category: categoryKey,
-      imageUrl: v.imageUrl ?? PLACEHOLDER_IMAGE,
+      imageUrl: v.imageUrl ?? "",
       imageAlt: v.imageAlt,
       tracksInventory: v.trackInventory,
       locationSoldOut: v.locationSoldOut,

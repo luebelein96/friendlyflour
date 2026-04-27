@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { absoluteUrl } from "@/lib/site-config";
 
@@ -18,41 +19,34 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-      <p className="eyebrow">About</p>
-      <h1 className="mt-4 font-display text-4xl font-medium tracking-tight text-[var(--color-ink)] sm:text-5xl">
-        We believe in second helpings
+    <div className="mx-auto max-w-3xl px-4 py-16 font-dm-sans sm:px-6 sm:py-24 lg:px-8">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-brand-red)]/75 sm:text-xs">
+        About
+      </p>
+      <h1 className="mt-4 max-w-[min(100%,28rem)] text-[clamp(1.625rem,4.2vw,2.5rem)] font-bold leading-[1.18] tracking-tight text-[var(--color-brand-red)] sm:max-w-2xl">
+        Gluten-free baking is hard to do well. We do it anyway.
       </h1>
-      <p className="mt-6 text-lg leading-relaxed text-[var(--color-ink-muted)]">
-        friendly flour started around a too-small counter, a stack of failed batches,
-        and a stubborn idea: gluten-free should still feel like a celebration.
-        We wanted cookies with chew, brownies with swagger, and mixes that make
-        your kitchen smell like you hired a pastry chef for the afternoon.
+      <p className="mt-5 text-base leading-relaxed text-[var(--color-ink-muted)] sm:text-lg">
+        My wife and I started Friendly Flour because we believed the bar could be higher.
+        We&apos;ve spent years obsessing over what gluten-free baking can actually be, and we&apos;re not done yet.
       </p>
       <div className="relative mt-12 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] shadow-[var(--shadow-card)]">
-        <div className="aspect-[16/10] bg-gradient-to-br from-[var(--color-tan)] via-[var(--color-surface)] to-[var(--color-sage)]/30" />
-        <p className="absolute bottom-4 left-4 right-4 rounded-[var(--radius-sm)] border border-white/30 bg-[var(--color-surface)]/90 px-4 py-3 text-sm text-[var(--color-ink-muted)] backdrop-blur-md">
-          Image placeholder — team photo, bakery shelf, or flour-dusted hands
-          welcome here.
-        </p>
+        <div className="relative aspect-[3/4] w-full">
+          <Image
+            src="/about.jpeg"
+            alt="friendly flour bakery"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 48rem"
+            priority
+          />
+        </div>
       </div>
-      <h2 className="mt-14 font-display text-2xl font-medium tracking-tight text-[var(--color-ink)]">
-        Our mission
-      </h2>
-      <p className="mt-3 leading-relaxed text-[var(--color-ink-muted)]">
-        Make gluten-free food that feels generous—generous with flavor, texture,
-        and joy. We obsess over the small things (salt, vanilla, bake time) so
-        you can focus on the big ones: who gets the last cookie, and whether
-        anyone is judging if you eat brownie batter from the bowl.
-      </p>
-      <p className="mt-4 leading-relaxed text-[var(--color-ink-muted)]">
-        We&apos;re not here to lecture; we&apos;re here to pass the plate.
-      </p>
       <Link
         href="/shop"
-        className="mt-10 inline-flex rounded-[var(--radius-sm)] bg-[var(--color-ink)] px-8 py-3 text-sm font-semibold text-[var(--color-surface)] transition hover:opacity-90"
+        className="mt-10 inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--color-brand-red)] px-8 text-sm font-medium tracking-[0.04em] text-white transition hover:bg-[var(--color-brand-red-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)]"
       >
-        Shop the pantry
+        Shop Now
       </Link>
     </div>
   );

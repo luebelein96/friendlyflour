@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import type { Product } from "@/types/product";
+import { ProductImagePlaceholder } from "@/components/product-image-placeholder";
 import { useCart } from "@/context/cart-context";
 import { formatUsd } from "@/lib/format";
+import { hasProductImage } from "@/lib/product-image";
 import { soldOutCtaInlineStyle } from "@/lib/cta-sold-out-style";
 import { canAddMore, maxPurchasableQuantity } from "@/lib/product-stock";
 
@@ -22,6 +24,7 @@ export function ProductCard({ product, onQuickView }: Props) {
   const unavailable = soldOut || atStockLimit;
 
   const openQuickView = () => onQuickView(product);
+  const showImage = hasProductImage(product.imageUrl);
 
   return (
     <article className="group flex flex-row items-center gap-3 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-[0_1px_0_rgba(12,12,12,0.04)] transition duration-300 md:flex-col md:items-stretch md:gap-0 md:p-0 md:hover:-translate-y-0.5 md:hover:shadow-[var(--shadow-card-hover)]">
@@ -31,13 +34,17 @@ export function ProductCard({ product, onQuickView }: Props) {
         className="flex min-w-0 flex-1 flex-row gap-3 rounded-xl text-left outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] md:w-full md:flex-col md:gap-0 md:rounded-none md:ring-offset-0"
       >
         <div className="relative h-[5.25rem] w-[5.25rem] shrink-0 overflow-hidden rounded-xl bg-[var(--color-tan)] md:aspect-square md:h-auto md:w-full md:rounded-none">
-          <Image
-            src={product.imageUrl}
-            alt={product.imageAlt}
-            fill
-            className="object-cover transition duration-500 md:group-hover:scale-[1.03]"
-            sizes="(max-width: 767px) 84px, (max-width: 1024px) 50vw, 25vw"
-          />
+          {showImage ? (
+            <Image
+              src={product.imageUrl}
+              alt={product.imageAlt}
+              fill
+              className="object-cover transition duration-500 md:group-hover:scale-[1.03]"
+              sizes="(max-width: 767px) 84px, (max-width: 1024px) 50vw, 25vw"
+            />
+          ) : (
+            <ProductImagePlaceholder />
+          )}
           {soldOut ? (
             <span className="absolute left-1 top-1 rounded-[var(--radius-sm)] bg-[var(--color-ink)]/85 px-1 py-0.5 text-[7px] font-bold uppercase tracking-wide text-white ring-1 ring-black/10 backdrop-blur-sm md:left-2 md:top-2 md:px-2 md:py-1 md:text-[10px] md:tracking-wider">
               Sold out

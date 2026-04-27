@@ -3,7 +3,9 @@
 import Image from "next/image";
 import { useEffect } from "react";
 import type { Product } from "@/types/product";
+import { ProductImagePlaceholder } from "@/components/product-image-placeholder";
 import { useCart } from "@/context/cart-context";
+import { hasProductImage } from "@/lib/product-image";
 import { soldOutCtaInlineStyle } from "@/lib/cta-sold-out-style";
 import { formatUsd } from "@/lib/format";
 import { canAddMore, maxPurchasableQuantity } from "@/lib/product-stock";
@@ -55,14 +57,18 @@ export function ProductQuickView({ product, onClose }: Props) {
         className="relative z-10 flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl sm:max-h-[85vh] sm:rounded-[var(--radius-lg)]"
       >
         <div className="relative aspect-[5/4] w-full shrink-0 bg-[var(--color-tan)] sm:aspect-[16/10]">
-          <Image
-            src={product.imageUrl}
-            alt={product.imageAlt}
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 100vw, 512px"
-            priority
-          />
+          {hasProductImage(product.imageUrl) ? (
+            <Image
+              src={product.imageUrl}
+              alt={product.imageAlt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, 512px"
+              priority
+            />
+          ) : (
+            <ProductImagePlaceholder absoluteFill />
+          )}
           <button
             type="button"
             onClick={onClose}

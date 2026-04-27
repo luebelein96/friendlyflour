@@ -44,15 +44,16 @@ export function ShopClient() {
 
   return (
     <>
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-12 font-dm-sans sm:px-6 sm:py-16 lg:px-8">
         <header className="max-w-2xl border-b border-[var(--color-border)] pb-10">
-          <p className="eyebrow">Current Items</p>
-          <h1 className="mt-4 font-display text-4xl font-medium tracking-tight text-[var(--color-ink)] sm:text-5xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-brand-red)]/75 sm:text-xs">
+            Current Items
+          </p>
+          <h1 className="mt-4 max-w-[min(100%,28rem)] text-[clamp(1.625rem,4.2vw,2.5rem)] font-bold leading-[1.18] tracking-tight text-[var(--color-brand-red)] sm:max-w-2xl">
             The shop
           </h1>
-          <p className="mt-4 text-base text-[var(--color-ink-muted)] sm:text-lg">
-            Mixes, cookies, and snacks—each one gluten-free and made to make you
-            smile mid-bite.
+          <p className="mt-5 text-base leading-relaxed text-[var(--color-ink-muted)] sm:text-lg">
+            This is what gluten-free baking is supposed to taste like.
           </p>
         </header>
 
@@ -83,7 +84,10 @@ export function ShopClient() {
           </div>
           */}
           <div className="flex items-center gap-3">
-            <label htmlFor="sort" className="text-[13px] font-semibold uppercase tracking-[0.06em] text-[var(--color-ink-muted)]">
+            <label
+              htmlFor="sort"
+              className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-brand-red)]/75 sm:text-xs"
+            >
               Sort
             </label>
             <select

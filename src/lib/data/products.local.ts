@@ -1,8 +1,7 @@
 import type { Product } from "@/types/product";
 
-/** Replace per product with `/product-imgs/...` when photos are ready */
-const IMG_TBD =
-  "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80";
+/** Use `""` until a `/product-imgs/...` URL is set (shop shows “Photo coming soon”). */
+const IMG_TBD = "";
 
 /** Offline / fallback catalog when Square is not configured or returns nothing. */
 export const localProducts: Product[] = [
