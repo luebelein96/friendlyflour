@@ -2,13 +2,50 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { track } from "@/lib/analytics";
+import { prefersReducedMotion } from "@/lib/motion";
+import { Reveal } from "@/components/reveal";
 
 export function GfBakingSection() {
+  const photoRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = photoRef.current;
+    if (!el) return;
+    if (prefersReducedMotion()) return;
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      // progress: -0.2 (above) -> 1.2 (below)
+      const p = (rect.top + rect.height * 0.4) / vh;
+      const clamped = Math.max(-0.2, Math.min(1.2, p));
+      const y = (clamped - 0.5) * 24; // subtle drift
+      el.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0)`;
+    };
+
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <section className="bg-[var(--color-brand-red)] font-dm-sans text-white selection:bg-[var(--color-sky)] selection:text-white">
       <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-        <div className="grid gap-10 sm:grid-cols-2 sm:items-center sm:gap-8 md:gap-10 lg:gap-14 xl:gap-20">
+        <Reveal className="grid gap-10 sm:grid-cols-2 sm:items-center sm:gap-8 md:gap-10 lg:gap-14 xl:gap-20">
           <div className="max-w-xl sm:min-w-0">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-white">
               100% GF
@@ -37,7 +74,10 @@ export function GfBakingSection() {
           </div>
 
           <div className="relative hidden w-full sm:flex sm:justify-end">
-            <div className="relative aspect-square w-full max-w-[min(100%,16rem)] sm:max-w-[min(100%,14rem)] md:max-w-[16rem] lg:max-w-[20rem] xl:max-w-[22rem]">
+            <div
+              ref={photoRef}
+              className="relative aspect-square w-full max-w-[min(100%,16rem)] sm:max-w-[min(100%,14rem)] md:max-w-[16rem] lg:max-w-[20rem] xl:max-w-[22rem] will-change-transform"
+            >
               <Image
                 src="/product-imgs/cookieBun.png"
                 alt="Spiraled cookie bun with powdered sugar"
@@ -47,7 +87,7 @@ export function GfBakingSection() {
               />
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

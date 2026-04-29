@@ -4,7 +4,7 @@ import Link from "next/link";
 import { absoluteUrl } from "@/lib/site-config";
 
 const aboutDescription =
-  "The friendly flour story—gluten-free baking with heart, humor, and great texture.";
+  "The friendly flour story—Austin, Texas gluten-free baking with heart, humor, and great texture. Dairy-free and vegan options too.";
 
 export const metadata: Metadata = {
   title: "About",

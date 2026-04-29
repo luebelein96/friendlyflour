@@ -4,7 +4,7 @@ import { faqItems } from "@/lib/data/faqs";
 import { absoluteUrl } from "@/lib/site-config";
 
 const faqDescription =
-  "Common questions about friendly flour gluten-free products, shipping, and baking.";
+  "Common questions about friendly flour (Austin, Texas) gluten-free baked goods—plus dairy-free and vegan options, shipping, and baking.";
 
 export const metadata: Metadata = {
   title: "FAQ",

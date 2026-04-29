@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 const PHRASE = "GLUTEN FREE HAS NEVER TASTED BETTER";
 const PHRASE_REPEAT = 8;
@@ -18,11 +20,44 @@ function AnnouncementStrip({ "aria-hidden": ariaHidden }: { "aria-hidden"?: bool
 }
 
 export function HeroHome() {
+  const marqueeRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = marqueeRef.current;
+    if (!el) return;
+    if (prefersReducedMotion()) return;
+
+    let resetTimer: number | null = null;
+    let raf: number | null = null;
+
+    const ramp = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        // Faster while actively scrolling; eases back quickly.
+        el.style.setProperty("--marquee-duration", "34s");
+        if (resetTimer) window.clearTimeout(resetTimer);
+        resetTimer = window.setTimeout(() => {
+          el.style.setProperty("--marquee-duration", "52s");
+        }, 160);
+      });
+    };
+
+    window.addEventListener("scroll", ramp, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", ramp);
+      if (resetTimer) window.clearTimeout(resetTimer);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <section className="relative flex min-h-[calc(100svh-var(--site-header-height))] w-screen max-w-[100vw] flex-col overflow-x-clip overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-cream)]">
       <div className="flex h-[30px] shrink-0 items-center bg-[var(--color-sky)] text-white">
         <div className="min-h-0 w-full overflow-hidden">
-          <div className="hero-announce-marquee font-dm-sans text-[12px] font-normal uppercase">
+          <div
+            ref={marqueeRef}
+            className="hero-announce-marquee font-dm-sans text-[12px] font-normal uppercase"
+          >
             <AnnouncementStrip />
             <AnnouncementStrip aria-hidden />
           </div>

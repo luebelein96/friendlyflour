@@ -54,7 +54,7 @@ export function SiteFooter() {
               Contact
             </p>
             <p className="mt-4 text-sm font-medium text-[var(--color-ink-muted)]">
-              hello@friendlyflour.com
+              hello@friendlyflouratx.com
             </p>
           </div>
         </div>

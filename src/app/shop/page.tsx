@@ -3,7 +3,7 @@ import { absoluteUrl } from "@/lib/site-config";
 import { ShopClient } from "./shop-client";
 
 const shopDescription =
-  "Gluten-free cookies, baking mixes, and snacks from friendly flour. Filter by category and add to cart.";
+  "Shop friendly flour in Austin, Texas: gluten-free cookies, baking mixes, and snacks. Dairy-free and vegan options available.";
 
 export const metadata: Metadata = {
   title: "Shop",

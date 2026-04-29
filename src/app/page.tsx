@@ -4,12 +4,11 @@ import { CustomOrdersSection } from "@/components/custom-orders-section";
 import { CustomerFavoritesMenu } from "@/components/customer-favorites-menu";
 import { GfBakingSection } from "@/components/gf-baking-section";
 import { HeroHome } from "@/components/hero-home";
-import { JsonLd } from "@/components/json-ld";
 import { NewsletterSection } from "@/components/newsletter-section";
 import { absoluteUrl } from "@/lib/site-config";
 
 const homeDescription =
-  "Gluten-free cookies, pastries, and baking mixes from friendly flour—small batch, thoughtfully made, ridiculously delicious.";
+  "friendly flour is a gluten-free bakery in Austin, Texas — cookies, pastries, and baking mixes made in small batches. We also offer dairy-free and vegan options.";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -21,36 +20,8 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const site = absoluteUrl("/");
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": `${site}/#organization`,
-        name: "friendly flour",
-        url: site,
-        description: homeDescription,
-        logo: {
-          "@type": "ImageObject",
-          url: absoluteUrl("/text-logo.png"),
-        },
-      },
-      {
-        "@type": "WebSite",
-        "@id": `${site}/#website`,
-        url: site,
-        name: "friendly flour",
-        description: homeDescription,
-        inLanguage: "en-US",
-        publisher: { "@id": `${site}/#organization` },
-      },
-    ],
-  };
-
   return (
     <>
-      <JsonLd data={structuredData} />
       <HeroHome />
       <GfBakingSection />
       <CustomerFavoritesMenu />
