@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/context/cart-context";
 import { useProductCatalog } from "@/context/product-catalog-context";
 import { ProductImagePlaceholder } from "@/components/product-image-placeholder";
+import { track } from "@/lib/analytics";
 import { formatUsd } from "@/lib/format";
 import { hasProductImage } from "@/lib/product-image";
 
@@ -16,6 +17,14 @@ export function CheckoutForm() {
   const [promoApplied, setPromoApplied] = useState(false);
   const [placed, setPlaced] = useState(false);
 
+  useEffect(() => {
+    void track("begin_checkout", {
+      currency: "USD",
+      items: lines.map((l) => ({ item_id: l.productId, quantity: l.quantity })),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const lineDetails = useMemo(() => {
     return lines
       .map((line) => {
@@ -24,7 +33,7 @@ export function CheckoutForm() {
         return { line, product: p };
       })
       .filter(Boolean) as { line: (typeof lines)[0]; product: NonNullable<ReturnType<typeof getProductById>> }[];
-  }, [lines]);
+  }, [getProductById, lines]);
 
   const subtotalCents = lineDetails.reduce(
     (sum, { line, product }) => sum + product.priceCents * line.quantity,
@@ -91,6 +100,17 @@ export function CheckoutForm() {
         className="mt-10 grid gap-10 lg:grid-cols-[1fr_380px]"
         onSubmit={(e) => {
           e.preventDefault();
+          void track("purchase", {
+            currency: "USD",
+            value: subtotalCents / 100,
+            items: lineDetails.map(({ line, product }) => ({
+              item_id: product.id,
+              item_name: product.name,
+              item_category: product.category,
+              price: product.priceCents / 100,
+              quantity: line.quantity,
+            })),
+          });
           clearCart();
           setPlaced(true);
         }}

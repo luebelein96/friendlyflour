@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { Product } from "@/types/product";
 import { ProductImagePlaceholder } from "@/components/product-image-placeholder";
 import { useCart } from "@/context/cart-context";
+import { track } from "@/lib/analytics";
 import { formatUsd } from "@/lib/format";
 import { hasProductImage } from "@/lib/product-image";
 import { soldOutCtaInlineStyle } from "@/lib/cta-sold-out-style";
@@ -25,12 +26,39 @@ export function ProductCard({ product, onQuickView }: Props) {
 
   const openQuickView = () => onQuickView(product);
   const showImage = hasProductImage(product.imageUrl);
+  const price = product.priceCents / 100;
 
   return (
     <article className="group flex flex-row items-center gap-3 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-[0_1px_0_rgba(12,12,12,0.04)] transition duration-300 md:flex-col md:items-stretch md:gap-0 md:p-0 md:hover:-translate-y-0.5 md:hover:shadow-[var(--shadow-card-hover)]">
       <button
         type="button"
-        onClick={openQuickView}
+        onClick={() => {
+          void track("select_item", {
+            item_list_id: "shop",
+            item_list_name: "Shop",
+            items: [
+              {
+                item_id: product.id,
+                item_name: product.name,
+                item_category: product.category,
+                price,
+              },
+            ],
+          });
+          void track("view_item", {
+            currency: "USD",
+            value: price,
+            items: [
+              {
+                item_id: product.id,
+                item_name: product.name,
+                item_category: product.category,
+                price,
+              },
+            ],
+          });
+          openQuickView();
+        }}
         className="flex min-w-0 flex-1 flex-row gap-3 rounded-xl text-left outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] md:w-full md:flex-col md:gap-0 md:rounded-none md:ring-offset-0"
       >
         <div className="relative h-[5.25rem] w-[5.25rem] shrink-0 overflow-hidden rounded-xl bg-[var(--color-tan)] md:aspect-square md:h-auto md:w-full md:rounded-none">
@@ -81,6 +109,19 @@ export function ProductCard({ product, onQuickView }: Props) {
             e.stopPropagation();
             if (unavailable) return;
             addProduct(product.id, 1);
+            void track("add_to_cart", {
+              currency: "USD",
+              value: price,
+              items: [
+                {
+                  item_id: product.id,
+                  item_name: product.name,
+                  item_category: product.category,
+                  price,
+                  quantity: 1,
+                },
+              ],
+            });
           }}
           className={
             unavailable

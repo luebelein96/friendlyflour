@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { track } from "@/lib/analytics";
 
 export function CustomOrdersSection() {
   return (
@@ -31,6 +34,13 @@ export function CustomOrdersSection() {
             </p>
             <Link
               href="mailto:hello@friendlyflour.com?subject=Custom%20order%20inquiry"
+              onClick={() =>
+                void track("get_in_touch_landing_clicked", {
+                  source: "landing",
+                  cta_location: "custom_orders_section",
+                  href: "mailto:hello@friendlyflour.com",
+                })
+              }
               className="mt-8 inline-flex min-h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-medium tracking-[0.04em] text-[var(--color-brand-red)] transition hover:bg-[var(--color-cream)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Get in touch

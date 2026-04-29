@@ -3,6 +3,7 @@ import { DM_Sans, Lilita_One } from "next/font/google";
 import { CartProvider } from "@/context/cart-context";
 import { ProductCatalogProvider } from "@/context/product-catalog-context";
 import { CartDrawer } from "@/components/cart-drawer";
+import { AnalyticsListener } from "@/components/analytics-listener";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { loadProductCatalog } from "@/lib/data/get-catalog";
@@ -99,6 +100,7 @@ export default async function RootLayout({
       <body className="flex min-h-full flex-col bg-[var(--color-cream)] font-dm-sans text-[var(--color-ink)] selection:bg-[var(--color-brand-red)] selection:text-white">
         <ProductCatalogProvider value={catalog}>
           <CartProvider>
+            <AnalyticsListener />
             <SiteHeader />
             <main className="flex-1 pb-16 md:pb-20 lg:pb-24">{children}</main>
             <SiteFooter />

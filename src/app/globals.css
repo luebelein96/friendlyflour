@@ -99,6 +99,7 @@ body {
 .hero-announce-marquee {
   display: inline-flex;
   flex-flow: row nowrap;
+  column-gap: 4rem;
   width: max-content;
   animation: marquee 52s linear infinite;
 }

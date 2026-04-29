@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Product } from "@/types/product";
 import { ProductCard } from "@/components/product-card";
 import { ProductQuickView } from "@/components/product-quick-view";
 import { useCart } from "@/context/cart-context";
 import { useProductCatalog } from "@/context/product-catalog-context";
+import { track } from "@/lib/analytics";
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "name";
 
@@ -41,6 +42,25 @@ export function ShopClient() {
     }
     return list;
   }, [sort, products, featuredRank]);
+
+  useEffect(() => {
+    void track("view_item_list", {
+      item_list_id: "shop",
+      item_list_name: "Shop",
+      sort,
+      items: filtered.slice(0, 30).map((p) => ({
+        item_id: p.id,
+        item_name: p.name,
+        item_category: p.category,
+        price: p.priceCents / 100,
+      })),
+    });
+  }, [filtered, sort]);
+
+  const openCartTracked = () => {
+    void track("view_cart", { source: "shop" });
+    openCart();
+  };
 
   return (
     <>
@@ -118,7 +138,7 @@ export function ShopClient() {
         <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-[var(--color-border)] bg-[var(--color-surface)]/95 p-3 backdrop-blur-xl sm:hidden">
           <button
             type="button"
-            onClick={openCart}
+            onClick={openCartTracked}
             className="font-mono flex w-full items-center justify-center rounded-full bg-[var(--color-brand-red)] py-3.5 text-sm font-medium tracking-wide text-white transition hover:bg-[var(--color-brand-red-hover)] active:scale-[0.99]"
           >
             View cart · {itemCount} {itemCount === 1 ? "item" : "items"}

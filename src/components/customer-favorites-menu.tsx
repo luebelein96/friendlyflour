@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { MENU_FAVORITES_COLUMNS } from "@/lib/data/menu-favorites";
+import { track } from "@/lib/analytics";
 
 export function CustomerFavoritesMenu() {
   return (
@@ -44,6 +45,13 @@ export function CustomerFavoritesMenu() {
       <div className="mt-10 flex justify-center">
         <Link
           href="/shop"
+          onClick={() =>
+            void track("full_menu_landing_clicked", {
+              source: "landing",
+              cta_location: "customer_favorites_menu",
+              href: "/shop",
+            })
+          }
           className="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--color-brand-red)] px-8 text-sm font-medium tracking-[0.04em] text-white transition hover:bg-[var(--color-brand-red-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-red)]"
         >
           Full Menu
@@ -54,6 +62,13 @@ export function CustomerFavoritesMenu() {
         Prefer our pantry picks?{" "}
         <Link
           href="/shop"
+          onClick={() =>
+            void track("shop_mixes_landing_clicked", {
+              source: "landing",
+              cta_location: "customer_favorites_menu",
+              href: "/shop",
+            })
+          }
           className="font-mono font-medium text-[var(--color-brand-red)] underline decoration-[var(--color-brand-red)]/35 underline-offset-4 transition hover:decoration-[var(--color-brand-red)]"
         >
           Shop mixes

@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { track } from "@/lib/analytics";
 
 export function GfBakingSection() {
   return (
@@ -20,6 +23,13 @@ export function GfBakingSection() {
             </p>
             <Link
               href="/shop"
+              onClick={() =>
+                void track("shop_now_landing_clicked", {
+                  source: "landing",
+                  cta_location: "gf_baking_section",
+                  href: "/shop",
+                })
+              }
               className="mt-8 inline-flex min-h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-medium tracking-[0.04em] text-[var(--color-brand-red)] transition hover:bg-[var(--color-cream)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Shop Now

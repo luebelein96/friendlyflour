@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useCart } from "@/context/cart-context";
 import { useProductCatalog } from "@/context/product-catalog-context";
 import { ProductImagePlaceholder } from "@/components/product-image-placeholder";
+import { track } from "@/lib/analytics";
 import { formatUsd } from "@/lib/format";
 import { hasProductImage } from "@/lib/product-image";
 import { canAddMore } from "@/lib/product-stock";
@@ -29,6 +30,11 @@ export function CartDrawer() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, closeCart]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    void track("view_cart", { source: "cart_drawer" });
+  }, [isOpen]);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
@@ -148,7 +154,22 @@ export function CartDrawer() {
                         </div>
                         <button
                           type="button"
-                          onClick={() => removeLine(line.productId)}
+                          onClick={() => {
+                            removeLine(line.productId);
+                            void track("remove_from_cart", {
+                              currency: "USD",
+                              value: product.priceCents / 100,
+                              items: [
+                                {
+                                  item_id: product.id,
+                                  item_name: product.name,
+                                  item_category: product.category,
+                                  price: product.priceCents / 100,
+                                  quantity: line.quantity,
+                                },
+                              ],
+                            });
+                          }}
                           className="text-xs font-semibold text-[var(--color-accent)] underline-offset-2 hover:underline"
                         >
                           Remove
